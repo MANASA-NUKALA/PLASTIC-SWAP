@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function Browse() {
   const [items, setItems] = useState([]);
@@ -7,7 +8,7 @@ export default function Browse() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/items");
+        const res = await fetch(`${API_URL}/api/items`);
         const data = await res.json();
         setItems(data);
       } catch (err) {
@@ -45,7 +46,7 @@ export default function Browse() {
               className="bg-white rounded-3xl shadow-2xl overflow-hidden transform transition hover:scale-105 hover:shadow-3xl hover:-translate-y-1 duration-300"
             >
               <img
-                src={`http://localhost:5000/uploads/${item.image}`} // <-- updated for backend images
+                src={`${API_URL}/uploads/${item.image}`} // <-- backend images
                 alt={item.name}
                 className="w-full h-52 object-cover"
               />

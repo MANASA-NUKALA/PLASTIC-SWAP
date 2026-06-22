@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
@@ -16,7 +17,7 @@ function Profile() {
     if (!token) return navigate("/login");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/me", {
+        const res = await fetch(`${API_URL}/api/auth/me`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -89,7 +90,7 @@ function Profile() {
       onSubmit={async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/auth/update", {
+        const res = await fetch(`${API_URL}/api/auth/update`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -119,7 +120,7 @@ function Profile() {
       onSubmit={async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/auth/update", {
+        const res = await fetch(`${API_URL}/api/auth/update`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

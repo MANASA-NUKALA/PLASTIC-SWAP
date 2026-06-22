@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const PostItem = ({ onItemPosted }) => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,10 @@ const PostItem = ({ onItemPosted }) => {
 
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please log in to post an item.");
+        return;
+      }
       const data = new FormData();
 
       data.append("name", formData.name);
@@ -32,15 +37,17 @@ const PostItem = ({ onItemPosted }) => {
       
       if (image) data.append("image", image);
 
-      const res = await fetch("http://localhost:5000/api/items", {
+      const res = await fetch(`${API_URL}/api/items`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: data,
       });
-
-      if (!res.ok) throw new Error("Failed to post item");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        throw new Error(errData?.msg || errData?.message || "Failed to post item");
+      }
 
       const result = await res.json();
       alert("Your item has been posted!");
